@@ -39,16 +39,11 @@ class FlappyBirdGameState extends State<FlappyBirdGame> {
   double pipeGap = 0.3;
   Timer? gameTimer;
   int score = 0; // Add score counter
-  final AudioPlayer pointPlayer = AudioPlayer(); // Player for point sound
-  final AudioPlayer gameOverPlayer = AudioPlayer(); // Player for game over sound
+  final AudioPlayer soundPlayer = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
-    pointPlayer.setVolume(0.5); // Set volume for point sound
-    gameOverPlayer.setVolume(0.5); // Set volume for game over sound
-    pointPlayer.setSource(AssetSource('point.mp3')); // Load point sound
-    gameOverPlayer.setSource(AssetSource('chuong-chua.mp3')); // Load game over sound
   }
 
   void startGame() {
@@ -67,13 +62,13 @@ class FlappyBirdGameState extends State<FlappyBirdGame> {
           // Check if the bird has passed a pipe to increase the score
           if (pipeX[i] < 0 && pipeX[i] > -0.01) {
             score++;
-            pointPlayer.resume(); // Play point sound
+            soundPlayer.play(AssetSource('point.mp3'));
           }
         }
 
         if (birdY > 1 || birdY < -1 || checkCollision()) {
           isGameOver = true;
-          gameOverPlayer.resume(); // Play game over sound
+          soundPlayer.play(AssetSource('chuong-chua.mp3'));
           gameTimer?.cancel();
         }
       });
